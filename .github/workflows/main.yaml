@@ -31,5 +31,5 @@ jobs:
       - name: Publish
         uses: onichandame/github-action-npm-publish:0.1.6
         env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # set this in github secrets
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # leave as it is. auto generated
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
