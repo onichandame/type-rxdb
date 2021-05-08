@@ -1,0 +1,35 @@
+name: Main
+on:
+  push:
+    branches:
+      - master
+      - main
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Run Unit Test
+        uses: onichandame/node-test-action@master
+
+  npm-publish:
+    name: Publish Package
+    needs:
+      - test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Set up Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 14
+      - name: Build distribution files
+        runs: yarn
+      - name: Publish
+        uses: onichandame/github-action-npm-publish:0.1.6
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # set this in github secrets
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # leave as it is. auto generated
