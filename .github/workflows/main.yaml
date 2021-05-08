@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: 14
       - name: Build distribution files
-        runs: yarn
+        run: yarn
       - name: Publish
         uses: onichandame/github-action-npm-publish:0.1.6
         env:
