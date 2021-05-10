@@ -14,13 +14,17 @@ class Person {
 describe(`type-rxdb`, () => {
   let db: RxDatabase
   beforeAll(async done => {
-    addRxPlugin(require(`pouchdb-adapter-memory`))
-    db = await createRxDatabase({ name: `test`, adapter: `memory` })
+    addRxPlugin(require(`pouchdb-adapter-leveldb`))
+    console.log(`initing db`)
+    db = await createRxDatabase({ name: `test`, adapter: require(`memdown`) })
+    console.log(`inited db`)
     done()
   })
 
-  afterAll(() => {
-    db.destroy()
+  afterAll(async done => {
+    console.log(`destroyed`)
+    await db.destroy()
+    done()
   })
 
   test(`can use decorators`, () => {
@@ -39,6 +43,27 @@ describe(`type-rxdb`, () => {
     await collection.insert({ name })
     const doc = await collection.findOne({ selector: { name } }).exec()
     expect(doc).toBeTruthy()
+    console.log(`modified`)
     done()
+  })
+
+  test(`can inherit class`, async done => {
+    console.log(`hi`)
+    ;(async () => {
+      @Collection({ type: `object`, version: 0 })
+      class Student extends Person {
+        @Column({})
+        grade!: number
+      }
+      const collection = await getCollectionForClass<Student>(Student, db)
+      collection
+      //console.log(`bitch`)
+      //const name = randStr()
+      //const grade = parseInt(Math.random().toString().substr(-1))
+      //await collection.insert({ name, grade })
+      //const doc = await collection.findOne({ selector: { name } }).exec()
+      //expect(doc).toHaveProperty(`grade`, grade)
+      done()
+    })()
   })
 })

@@ -8,6 +8,8 @@ type Args = RxJsonSchema['properties'][string]
 
 export const Column = (args: Args) => {
   return ((prototype, key) => {
+    console.log(`column`)
+    console.log(key)
     if (guardKeyType(key)) {
       args.type =
         args.type || Reflect.getMetadata(`design:type`, prototype, key)
