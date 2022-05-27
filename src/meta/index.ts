@@ -1,0 +1,6 @@
+export const fieldMetaKey = Symbol(`field_meta`)
+export const collectionMetaKey = Symbol(`collection_meta`)
+export const primaryKeyMetaKey = Symbol(`primary_key_meta`)
+export const indexMetaKey = Symbol(`index_meta`)
+export const collectionNameMetaKey = Symbol(`collection_name_meta`)
+export const hooksMetaKey = Symbol(`hooks_meta`)

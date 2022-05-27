@@ -1,13 +1,15 @@
-import 'reflect-metadata'
+import { RxJsonSchema } from 'rxdb'
 
-import { getOrCreateStore } from '../store'
-import { RxJsonSchema } from '../types'
+import { collectionMetaKey, collectionNameMetaKey } from '../meta'
 
-type Args = Omit<RxJsonSchema, 'properties' | 'attachments'>
-
-export const Collection = (args: Args) => {
+export const Collection = <T = {}>({ name, ...args }: CollectionOpts<T>) => {
   return (constructor => {
-    const store = getOrCreateStore(constructor.prototype)
-    Object.assign(store.schema, args)
+    Reflect.defineMetadata(collectionNameMetaKey, name, constructor)
+    Reflect.defineMetadata(collectionMetaKey, args, constructor)
   }) as ClassDecorator
+}
+
+interface CollectionOpts<T>
+  extends Omit<RxJsonSchema<T>, 'properties' | 'type' | 'primaryKey'> {
+  name: string
 }

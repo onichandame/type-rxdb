@@ -1,5 +1,8 @@
-export { RxCollectionCreatorBase } from 'rxdb/dist/types/types/rx-collection'
-export { RxJsonSchema } from 'rxdb'
+export type Class<T = any> = { new (..._: any[]): T }
+
+export type MaybePromise<T> = T | Promise<T>
+
+export type NonEmptyArray<T> = [T, ...T[]]
 
 export type ExtractProps<ObjectType> = Pick<
   ObjectType,
