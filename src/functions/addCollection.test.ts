@@ -29,8 +29,9 @@ describe(`addCollection`, () => {
     @PreInsert<Test>(function (this, doc) {
       doc.id = id
     })
+    class Base {}
     @Collection({ name: `test`, version: 0 })
-    class Test {
+    class Test extends Base {
       @Field({ primaryKey: true })
       id!: string
     }
