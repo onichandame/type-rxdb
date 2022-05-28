@@ -1,4 +1,4 @@
-import { RxCollection } from 'rxdb'
+import { RxCollection, RxDocument } from 'rxdb'
 
 export type Class<T = any> = { new (..._: any[]): T }
 
@@ -35,4 +35,8 @@ export type ReturnCollectionType<TCls extends Class> = RxCollection<
   ExtractProperties<InstanceType<TCls>>,
   ExtractMethods<InstanceType<TCls>>,
   ExtractMethods<TCls>
+>
+export type DocumentType<TCls extends Class> = RxDocument<
+  ExtractProperties<InstanceType<TCls>>,
+  ExtractMethods<InstanceType<TCls>>
 >
