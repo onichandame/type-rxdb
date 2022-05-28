@@ -1,14 +1,12 @@
 import { RxDatabase } from 'rxdb'
+
 import { HooksMeta } from '../decorators/hooks/meta'
 import { collectionNameMetaKey, hooksMetaKey } from '../meta'
 import { Class } from '../types'
 import { getCollectionForClass } from './getCollectionForClass'
 
-export const addCollection = async <TDb extends RxDatabase>(
-  db: TDb,
-  cls: Class<any>
-) => {
-  const name = Reflect.getMetadata(collectionNameMetaKey, cls)
+export const addCollection = async (db: RxDatabase<any>, cls: Class<any>) => {
+  const name: keyof typeof db = Reflect.getMetadata(collectionNameMetaKey, cls)
   if (typeof name !== `string`)
     throw new Error(
       `collection name must be defined. consider adding @Collection({name: 'xxx'})`

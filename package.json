@@ -1,6 +1,6 @@
 {
   "name": "@onichandame/type-rxdb",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "typescript with rxdb",
   "main": "dist/index.js",
   "repository": "https://github.com/onichandame/type-rxdb.git",
@@ -10,6 +10,9 @@
     "rxdb": "^9.15.0",
     "rxjs": "^7.5.5"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p ./tsconfing.build.json",
     "prepare": "npm run build",
@@ -20,7 +23,7 @@
     "semi": false,
     "arrowParens": "avoid",
     "singleQuote": true,
-		"trailingComma": "es5"
+    "trailingComma": "es5"
   },
   "devDependencies": {
     "@types/jest": "^27.5.1",

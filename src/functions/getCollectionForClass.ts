@@ -21,6 +21,15 @@ export const getCollectionForClass = <T>(
   const indices = Reflect.getMetadata(indexMetaKey, cls)
   if (!primaryKey)
     throw new Error(`Must define a primary key for collection ${cls.name}`)
+  const staticMethods = Object.getOwnPropertyNames(cls)
+    .map(v => (cls as any)[v])
+    .filter(v => typeof v === `function`)
+    .reduce((prev, curr) => ({ ...prev, [curr.name]: curr }), {} as any)
+  const instanceMethods = Object.getOwnPropertyNames(cls.prototype)
+    .filter(v => v !== `constructor`)
+    .map(v => cls.prototype[v])
+    .filter(v => typeof v === `function`)
+    .reduce((prev, curr) => ({ ...prev, [curr.name]: curr }), {} as any)
   return {
     schema: {
       ...collectionMeta,
@@ -29,7 +38,7 @@ export const getCollectionForClass = <T>(
       properties: fieldMeta,
       indexes: indices,
     },
-    methods: new cls() as any,
-    statics: cls as any,
+    methods: instanceMethods,
+    statics: staticMethods,
   }
 }

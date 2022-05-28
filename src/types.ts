@@ -1,3 +1,5 @@
+import { RxCollection } from 'rxdb'
+
 export type Class<T = any> = { new (..._: any[]): T }
 
 export type MaybePromise<T> = T | Promise<T>
@@ -15,13 +17,22 @@ export type ExtractProps<ObjectType> = Pick<
   }[keyof ObjectType]
 >
 
-export type ExtractMethods<ObjectType> = Pick<
-  ObjectType,
+type ExtractMethods<T> = Pick<
+  T,
   {
-    [Property in keyof ObjectType]: ObjectType[Property] extends (
-      ..._: unknown[]
-    ) => unknown
-      ? Property
-      : never
-  }[keyof ObjectType]
+    [key in keyof T]: T[key] extends Function ? key : never
+  }[keyof T]
+>
+
+type ExtractProperties<T> = Pick<
+  T,
+  {
+    [key in keyof T]: T[key] extends Function ? never : key
+  }[keyof T]
+>
+
+export type ReturnCollectionType<TCls extends Class> = RxCollection<
+  ExtractProperties<InstanceType<TCls>>,
+  ExtractMethods<InstanceType<TCls>>,
+  ExtractMethods<TCls>
 >
