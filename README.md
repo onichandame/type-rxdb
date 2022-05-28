@@ -28,7 +28,7 @@ import { createRxDatabase } from 'rxdb'
   input.id = window.crypto.randomUUID()
 })
 // collections must have name and version defined. `name` specifies which key under db corresponds to the collection
-@Collection({ name: `model`, version: 0 })
+@Collection({ name: `user`, version: 0 })
 class User {
   // every collection must have EXACTLY ONE primary key
   @Field({ primaryKey: true })
@@ -52,6 +52,8 @@ await addCollection(db, User)
 
 // use db.user to do CRUD!
 ```
+
+For more complex examples see [the e2e test](./src/index.test.ts)
 
 ## Caveats
 
