@@ -25,11 +25,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@master
         with:
-          node-version: 14
+          node-version: 16
       - name: Build distribution files
-        run: yarn
+        run: yarn && yarn build
       - name: Publish
-        uses: onichandame/github-action-npm-publish@v0.1.6
+        run: yarn npm publish
         env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} 
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
