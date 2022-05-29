@@ -1,6 +1,6 @@
 {
   "name": "@onichandame/type-rxdb",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "typescript with rxdb",
   "main": "dist/index",
   "repository": "https://github.com/onichandame/type-rxdb.git",
