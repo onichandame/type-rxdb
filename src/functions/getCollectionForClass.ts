@@ -21,15 +21,14 @@ export const getCollectionForClass = <T>(
   const indices = Reflect.getMetadata(indexMetaKey, cls)
   if (!primaryKey)
     throw new Error(`Must define a primary key for collection ${cls.name}`)
-  const staticMethods = Object.getOwnPropertyNames(cls)
-    .map(v => (cls as any)[v])
-    .filter(v => typeof v === `function`)
-    .reduce((prev, curr) => ({ ...prev, [curr.name]: curr }), {} as any)
-  const instanceMethods = Object.getOwnPropertyNames(cls.prototype)
-    .filter(v => v !== `constructor`)
-    .map(v => cls.prototype[v])
-    .filter(v => typeof v === `function`)
-    .reduce((prev, curr) => ({ ...prev, [curr.name]: curr }), {} as any)
+  const instanceMethods = getMethods(cls.prototype).reduce(
+    (prev, curr) => ({ ...prev, [curr.name]: curr }),
+    {} as any
+  )
+  const staticMethods = getMethods(cls).reduce(
+    (prev, curr) => ({ ...prev, [curr.name]: curr }),
+    {} as any
+  )
   return {
     schema: {
       ...collectionMeta,
@@ -41,4 +40,20 @@ export const getCollectionForClass = <T>(
     methods: instanceMethods,
     statics: staticMethods,
   }
+}
+
+function getMethods(obj: any) {
+  class Dummy {}
+  if (
+    obj === Object.getPrototypeOf(Dummy) ||
+    obj === Object.getPrototypeOf(typeof Dummy)
+  )
+    return []
+  const methods = Object.getOwnPropertyNames(obj)
+    .filter(v => v !== `constructor`)
+    .map(v => obj[v])
+    .filter(v => typeof v === `function`)
+  const parent = Object.getPrototypeOf(obj)
+  if (parent) methods.push(...getMethods(parent))
+  return methods
 }

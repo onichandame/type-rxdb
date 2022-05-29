@@ -27,12 +27,16 @@ describe(`getCollectionForClass`, () => {
     class Base {
       @Field({ primaryKey: true })
       id!: string
+      static hi() {}
+      hi() {}
     }
     class Test extends Base {}
     const collection = getCollectionForClass(Test)
     expect(collection.schema.primaryKey).toEqual(`id`)
     expect(collection.schema.properties.id).toEqual({ type: `string` })
     expect(collection.schema.version).toEqual(0)
+    expect(collection.statics?.hi).toEqual(Base.hi)
+    expect(collection.methods?.hi).toEqual(Base.prototype.hi)
   })
 
   test(`can override from inherited class`, () => {
