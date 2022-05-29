@@ -23,13 +23,15 @@ describe(`getCollectionForClass`, () => {
   })
 
   test(`can get collection from inherited class`, () => {
+    @Collection({ version: 1, name: `base` })
     class Base {
       @Field({ primaryKey: true, required: true })
       id!: string
       static hi() {}
       hi() {}
     }
-    @Collection({ version: 0, name: `test` })
+    // TODO add migration test
+    @Collection({ version: 1, name: `test`, migrations: { 1: function () {} } })
     class Test extends Base {}
     const collection = getCollectionForClass(Test)
     expect(collection.schema.primaryKey).toEqual(`id`)

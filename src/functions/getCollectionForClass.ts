@@ -4,6 +4,7 @@ import {
   collectionMetaKey,
   fieldMetaKey,
   indexMetaKey,
+  migrationMetaKey,
   primaryKeyMetaKey,
   requiredKeyMetaKey,
 } from '../meta'
@@ -31,6 +32,7 @@ export const getCollectionForClass = <T>(
     (prev, curr) => ({ ...prev, [curr.name]: curr }),
     {} as any
   )
+  const migrations = Reflect.getOwnMetadata(migrationMetaKey, cls)
   return {
     schema: {
       ...collectionMeta,
@@ -42,6 +44,7 @@ export const getCollectionForClass = <T>(
     },
     methods: instanceMethods,
     statics: staticMethods,
+    migrationStrategies: migrations,
   }
 }
 
