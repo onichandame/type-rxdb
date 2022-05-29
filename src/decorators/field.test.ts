@@ -14,7 +14,7 @@ describe(`field`, () => {
   })
   describe(`type`, () => {
     test(`can deduce type by default`, () => {
-      class Test {
+      class Base {
         @Field()
         str!: string
         @Field()
@@ -26,6 +26,7 @@ describe(`field`, () => {
         @Field()
         obj!: any
       }
+      class Test extends Base {}
       const meta = getFieldMeta(Test)
       expect(meta.str.type).toEqual(`string`)
       expect(meta.num.type).toEqual(`number`)
@@ -43,10 +44,11 @@ describe(`field`, () => {
     })
   })
   test(`primary key`, () => {
-    class Test {
+    class Base {
       @Field({ primaryKey: true })
       id!: number
     }
+    class Test extends Base {}
     expect(Reflect.getMetadata(primaryKeyMetaKey, Test)).toEqual(`id`)
     class TestNoKey {
       @Field()

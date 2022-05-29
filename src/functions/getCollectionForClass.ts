@@ -46,7 +46,7 @@ function getMethods(obj: any) {
   class Dummy {}
   if (
     obj === Object.getPrototypeOf(Dummy) ||
-    obj === Object.getPrototypeOf(typeof Dummy)
+    obj === Object.getPrototypeOf(Dummy.prototype)
   )
     return []
   const methods = Object.getOwnPropertyNames(obj)
