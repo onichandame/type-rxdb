@@ -8,11 +8,14 @@ import { addCollection } from './functions/addCollection'
 describe(`end to end test`, () => {
   @PreInsert<Model>(function (input) {
     input.id = randomUUID()
+    input.createdAt = new Date()
   })
   @Collection({ name: `model`, version: 0 })
   class Model {
     @Field({ primaryKey: true })
     id!: string
+    @Field()
+    createdAt!: Date
     @Field()
     firstName!: string
     @Field()
