@@ -36,7 +36,7 @@ describe(`getCollectionForClass`, () => {
     const collection = getCollectionForClass(Test)
     expect(collection.schema.primaryKey).toEqual(`id`)
     expect(collection.schema.properties.id).toEqual({ type: `string` })
-    expect(collection.schema.version).toEqual(0)
+    expect(collection.schema.version).toEqual(1)
     expect(collection.schema.required).toEqual([`id`])
     expect(collection.statics?.hi).toEqual(Base.hi)
     expect(collection.methods?.hi).toEqual(Base.prototype.hi)
