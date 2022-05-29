@@ -4,6 +4,11 @@ on:
     branches:
       - master
       - main
+    paths:
+      - .github/**
+      - src/**
+      - package.json
+      - tsconfig*.json
 jobs:
   test:
     name: Publish Package
