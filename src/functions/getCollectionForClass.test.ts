@@ -24,7 +24,7 @@ describe(`getCollectionForClass`, () => {
 
   test(`can get collection from inherited class`, () => {
     class Base {
-      @Field({ primaryKey: true })
+      @Field({ primaryKey: true, required: true })
       id!: string
       static hi() {}
       hi() {}
@@ -35,6 +35,7 @@ describe(`getCollectionForClass`, () => {
     expect(collection.schema.primaryKey).toEqual(`id`)
     expect(collection.schema.properties.id).toEqual({ type: `string` })
     expect(collection.schema.version).toEqual(0)
+    expect(collection.schema.required).toEqual([`id`])
     expect(collection.statics?.hi).toEqual(Base.hi)
     expect(collection.methods?.hi).toEqual(Base.prototype.hi)
   })

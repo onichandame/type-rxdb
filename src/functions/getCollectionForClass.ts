@@ -5,6 +5,7 @@ import {
   fieldMetaKey,
   indexMetaKey,
   primaryKeyMetaKey,
+  requiredKeyMetaKey,
 } from '../meta'
 import { Class } from '../types'
 
@@ -18,6 +19,7 @@ export const getCollectionForClass = <T>(
     )
   const fieldMeta = Reflect.getMetadata(fieldMetaKey, cls)
   const primaryKey = Reflect.getMetadata(primaryKeyMetaKey, cls)
+  const requiredKeys = Reflect.getMetadata(requiredKeyMetaKey, cls)
   const indices = Reflect.getMetadata(indexMetaKey, cls)
   if (!primaryKey)
     throw new Error(`Must define a primary key for collection ${cls.name}`)
@@ -36,6 +38,7 @@ export const getCollectionForClass = <T>(
       type: `object`,
       properties: fieldMeta,
       indexes: indices,
+      required: requiredKeys,
     },
     methods: instanceMethods,
     statics: staticMethods,

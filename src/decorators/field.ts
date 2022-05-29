@@ -1,10 +1,13 @@
 import { TopLevelProperty } from 'rxdb/dist/types/types'
 
-import { fieldMetaKey, primaryKeyMetaKey } from '../meta'
+import { fieldMetaKey, primaryKeyMetaKey, requiredKeyMetaKey } from '../meta'
 
-type FieldOpts = TopLevelProperty & { primaryKey?: boolean }
+type FieldOpts = Omit<TopLevelProperty, 'required'> & {
+  primaryKey?: boolean
+  required?: boolean
+}
 
-export const Field = ({ primaryKey, ...opts }: FieldOpts = {}) => {
+export const Field = ({ primaryKey, required, ...opts }: FieldOpts = {}) => {
   return ((prototype, key) => {
     if (typeof key !== `string`)
       throw new Error(`field ${key.toString()} must be string`)
@@ -14,6 +17,16 @@ export const Field = ({ primaryKey, ...opts }: FieldOpts = {}) => {
           `only one primary key can be defined in model ${prototype.constructor.name}`
         )
       Reflect.defineMetadata(primaryKeyMetaKey, key, prototype.constructor)
+    }
+    if (required) {
+      const requiredKeys =
+        Reflect.getMetadata(requiredKeyMetaKey, prototype.constructor) || []
+      requiredKeys.push(key)
+      Reflect.defineMetadata(
+        requiredKeyMetaKey,
+        requiredKeys,
+        prototype.constructor
+      )
     }
     opts.type =
       opts.type || parseType(Reflect.getMetadata(`design:type`, prototype, key))
