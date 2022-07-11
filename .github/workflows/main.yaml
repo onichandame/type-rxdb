@@ -11,7 +11,7 @@ on:
       - tsconfig*.json
       - .yarnrc.yml
 jobs:
-  test:
+  publish:
     name: Publish Package
     runs-on: ubuntu-latest
     steps:
